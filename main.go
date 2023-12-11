@@ -24,7 +24,7 @@ const (
 )
 
 var (
-	// version and baord are set at link time via -X flag
+	// version and board are set at link time via -X flag
 	version       string = "dev"
 	board         string = "unknown"
 	enableCapture bool   = false
