@@ -1,0 +1,1 @@
+none usb-gadget usb-host kbd-scrolllock kbd-numlock kbd-capslock kbd-kanalock kbd-shiftllock kbd-shiftlock kbd-ctrllock kbd-ctrlrlock usbport disk-activity disk-read disk-write cpu1 cpu2 cpu3 activity [default-on] panic mmc1 mmc0 rfkill-any rfkill-none stmmac-0:00:10Mbp bluetooth-power
