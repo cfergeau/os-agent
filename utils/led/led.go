@@ -6,13 +6,22 @@ import (
 	"strings"
 )
 
+// unit tests override this
+var sysClassLedsPath = "/sys/class/leds/"
+
 type LED struct {
 	Name           string
 	DefaultTrigger string
 }
 
+func (led LED) getSysfsPath(elems ...string) string {
+	relPath := filepath.Join(elems...)
+
+	return filepath.Join(sysClassLedsPath, led.Name, relPath)
+}
+
 func (led LED) GetTrigger() (string, error) {
-	ledTriggerFilePath := filepath.Join("/sys/class/leds/", led.Name, "trigger")
+	ledTriggerFilePath := led.getSysfsPath("trigger")
 	ledTrigger, err := os.ReadFile(ledTriggerFilePath)
 	if err != nil {
 		return "", err
@@ -21,7 +30,7 @@ func (led LED) GetTrigger() (string, error) {
 }
 
 func (led LED) SetTrigger(newState bool) error {
-	ledTriggerFilePath := filepath.Join("/sys/class/leds/", led.Name, "trigger")
+	ledTriggerFilePath := led.getSysfsPath("trigger")
 	var newTrigger []byte
 
 	if newState {
