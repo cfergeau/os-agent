@@ -21,12 +21,27 @@ func (led LED) getSysfsPath(elems ...string) string {
 }
 
 func (led LED) GetTrigger() (string, error) {
-	ledTriggerFilePath := led.getSysfsPath("trigger")
-	ledTrigger, err := os.ReadFile(ledTriggerFilePath)
+	triggers, err := led.GetTriggers()
 	if err != nil {
 		return "", err
 	}
-	return strings.TrimSpace(string(ledTrigger)), err
+	for _, trigger := range triggers {
+		if strings.HasPrefix(trigger, "[") && strings.HasSuffix(trigger, "]") {
+			return trigger[1 : len(trigger)-1], nil
+		}
+	}
+
+	// return an error?
+	return "", nil
+}
+
+func (led LED) GetTriggers() ([]string, error) {
+	ledTriggerFilePath := led.getSysfsPath("trigger")
+	ledTrigger, err := os.ReadFile(ledTriggerFilePath)
+	if err != nil {
+		return nil, err
+	}
+	return strings.Split(string(ledTrigger), " "), err
 }
 
 func (led LED) SetTrigger(newState bool) error {
