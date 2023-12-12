@@ -5,6 +5,7 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
 
+	"github.com/home-assistant/os-agent/boards/generic"
 	"github.com/home-assistant/os-agent/boards/green"
 	"github.com/home-assistant/os-agent/boards/supervised"
 	"github.com/home-assistant/os-agent/boards/yellow"
@@ -70,6 +71,8 @@ func InitializeDBus(conn *dbus.Conn, board string) {
 
 	// Initialize the board
 	switch board {
+	case "GenericAarch64", "GenericAmd64":
+		generic.InitializeDBus(conn)
 	case "Green":
 		green.InitializeDBus(conn)
 	case "Supervised":
