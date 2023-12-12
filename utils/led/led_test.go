@@ -2,6 +2,7 @@ package led
 
 import (
 	"os"
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -44,5 +45,18 @@ func TestSetTrigger(t *testing.T) {
 	require.NoError(t, err)
 
 	requireEqualFileContent(t, ledTriggerFilePath, "default-on")
+
+}
+
+func TestGetLeds(t *testing.T) {
+	sysClassLedsPath = "testdata"
+	leds, err := GetLeds()
+	require.NoError(t, err)
+	ledNames := []string{}
+	for _, led := range leds {
+		ledNames = append(ledNames, led.Name)
+	}
+	slices.Sort(ledNames)
+	require.Equal(t, []string{"activity", "power", "user"}, ledNames)
 
 }

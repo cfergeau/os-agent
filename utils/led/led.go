@@ -61,3 +61,21 @@ func (led LED) SetTrigger(newState bool) error {
 
 	return nil
 }
+
+/* Returns a list of all LEDs available on the system in /sys/class/leds */
+func GetLeds() ([]LED, error) {
+	leds := []LED{}
+
+	dirs, err := os.ReadDir(sysClassLedsPath)
+	if err != nil {
+		return nil, err
+	}
+	for _, dirEntry := range dirs {
+		if !dirEntry.IsDir() {
+			continue
+		}
+		leds = append(leds, LED{Name: dirEntry.Name()})
+	}
+
+	return leds, nil
+}
